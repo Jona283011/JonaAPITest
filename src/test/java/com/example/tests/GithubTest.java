@@ -1,9 +1,6 @@
 package com.example.tests;
 
-import com.example.models.PrivateRepo;
-import com.example.models.PrivateUser;
-import com.example.models.PublicUser;
-import com.example.models.PublicRepo;
+import com.example.models.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -16,9 +13,12 @@ import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
+import static com.example.tests.AssertUtils.assertFieldExistsAndCanBeNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GithubTest {
@@ -26,8 +26,9 @@ public class GithubTest {
     private static final String BASE_USERS = "https://api.github.com/users";
     private static final String BASE_USER = "https://api.github.com/user";
     private static final String BASE_REPOS = "https://api.github.com/repos";
-    private static final String accessToken = "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";
-    private static final String username = "Jona283011";
+    private static final String accessToken = getTokenFromProperties();
+    private static final String username = "/Jona283011";
+    private static final String reponame = "/JonaAPITest";
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -36,17 +37,13 @@ public class GithubTest {
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
-            //request.setHeader("Authorization", "token " + accessToken);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verificar el status code
                 int statusCode = response.getStatusLine().getStatusCode();
                 assertEquals(HttpStatus.SC_OK, statusCode, "Status code should be 200");
 
-                // Leer la respuesta
                 String responseBody = EntityUtils.toString(response.getEntity());
 
-                // Verificar los campos de la respuesta
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
                 PublicUser publicUser = objectMapper.readValue(responseBody, PublicUser.class);
@@ -65,14 +62,11 @@ public class GithubTest {
             request.setHeader("Authorization", "Bearer " + accessToken);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verificar el status code
                 int statusCode = response.getStatusLine().getStatusCode();
                 assertEquals(HttpStatus.SC_OK, statusCode, "Status code should be 200");
 
-                // Leer la respuesta
                 String responseBody = EntityUtils.toString(response.getEntity());
 
-                // Verificar los campos de la respuesta
                 objectMapper.registerModule(new JavaTimeModule());
                 PrivateUser privateUser = objectMapper.readValue(responseBody, PrivateUser.class);
                 verifyPrivateUser(privateUser);
@@ -88,7 +82,6 @@ public class GithubTest {
             HttpGet request = new HttpGet(url);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verificar el status code
                 int statusCode = response.getStatusLine().getStatusCode();
                 assertEquals(HttpStatus.SC_NOT_FOUND, statusCode, "Status code should be 404");
                 String responseBody = EntityUtils.toString(response.getEntity());
@@ -104,28 +97,23 @@ public class GithubTest {
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
-            request.setHeader("Authorization", "Token " + accessToken);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verificar el status code
                 int statusCode = response.getStatusLine().getStatusCode();
                 assertEquals(HttpStatus.SC_OK, statusCode, "Status code should be 200");
 
-                // Leer la respuesta
                 String responseBody = EntityUtils.toString(response.getEntity());
                 try {
-                    // Parsear la respuesta JSON
                     JSONArray jsonArray = new JSONArray(responseBody);
 
-                    // Convertir JSON a objetos Repository
                     objectMapper.registerModule(new JavaTimeModule());
                     List<PublicRepo> publicRepositories = objectMapper.readValue(jsonArray.toString(), new TypeReference<List<PublicRepo>>(){});
 
-                    // Validar que el campo 'visibility' sea 'public' en todos los objetos Repository
                     boolean allVisibilityPublic = publicRepositories.stream()
                             .allMatch(repo -> "public".equals(repo.getVisibility()));
 
                     assertTrue(allVisibilityPublic, "All repositories should be public");
+                    publicRepositories.forEach(this::verifyPublicRepo);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -142,7 +130,6 @@ public class GithubTest {
             HttpGet request = new HttpGet(url);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verificar el status code
                 int statusCode = response.getStatusLine().getStatusCode();
                 assertEquals(HttpStatus.SC_NOT_FOUND, statusCode, "Status code should be 404");
                 String responseBody = EntityUtils.toString(response.getEntity());
@@ -161,28 +148,69 @@ public class GithubTest {
             request.setHeader("Authorization", "Token " + accessToken);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verificar el status code
                 int statusCode = response.getStatusLine().getStatusCode();
                 assertEquals(HttpStatus.SC_OK, statusCode, "Status code should be 200");
 
-                // Leer la respuesta
                 String responseBody = EntityUtils.toString(response.getEntity());
                 try {
-                    // Parsear la respuesta JSON
                     JSONArray jsonArray = new JSONArray(responseBody);
 
-                    // Convertir JSON a objetos Repository
                     objectMapper.registerModule(new JavaTimeModule());
                     List<PrivateRepo> privateRepositories = objectMapper.readValue(jsonArray.toString(), new TypeReference<List<PrivateRepo>>(){});
-
-                    // Verificar que haya al menos un repositorio privado y uno público
 
                     assertTrue(privateRepositories.stream().anyMatch(repo -> !repo.isPrivate()), "There must be at least one public repository");
                     assertTrue(privateRepositories.stream().anyMatch(repo -> repo.isPrivate()), "There must be at least one private repository");
 
+                    privateRepositories.forEach(this::verifyPrivateRepo);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    @Test
+    public void task7() throws Exception {
+
+        String url = BASE_REPOS + username +reponame+"/commits";
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(url);
+            request.setHeader("Authorization", "Bearer " + accessToken);
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int statusCode = response.getStatusLine().getStatusCode();
+                assertEquals(HttpStatus.SC_OK, statusCode, "Status code should be 200");
+
+                String responseBody = EntityUtils.toString(response.getEntity());
+                try {
+                    JSONArray jsonArray = new JSONArray(responseBody);
+
+                    objectMapper.registerModule(new JavaTimeModule());
+                    List<CommitDetail> commitsList = objectMapper.readValue(jsonArray.toString(), new TypeReference<List<CommitDetail>>(){});
+
+                    commitsList.forEach(this::verifyCommitsAndPrint);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Test
+    public void task8() throws Exception {
+        String url = BASE_REPOS + "/nonExistingOwner/nonExistingRepo/commits";
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(url);
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int statusCode = response.getStatusLine().getStatusCode();
+                assertEquals(HttpStatus.SC_NOT_FOUND, statusCode, "Status code should be 404");
+                String responseBody = EntityUtils.toString(response.getEntity());
+                assertTrue(responseBody.contains("Not Found"), "Response body should contain 'Not Found'");
             }
         }
     }
@@ -237,11 +265,11 @@ public class GithubTest {
         assertNotNull(privateUser.getCompany(), "Company should not be null");
         assertNotNull(privateUser.getBlog(), "Blog should not be null");
         assertNotNull(privateUser.getLocation(), "Location should not be null");
-       // assertNotNull(privateUser.getEmail(), "Email field should be present in the response");
-        //assertNotNull(privateUser.getHireable(), "Hireable should not be null");
+        assertFieldExistsAndCanBeNull(privateUser.getEmail(), true);
+        assertFieldExistsAndCanBeNull(privateUser.getHireable(), true);
         assertNotNull(privateUser.getBio(), "Bio should not be null");
-        //assertNotNull(privateUser.getTwitterUsername(), "Twitter Username should not be null");
-        //assertNotNull(privateUser.getNotificationEmail(), "Notification Email should not be null");
+        assertFieldExistsAndCanBeNull(privateUser.getTwitterUsername(), true);
+        assertFieldExistsAndCanBeNull(privateUser.getNotificationEmail(), true);
         assertNotNull(privateUser.getPublicRepos(), "Public should not be null");
         assertNotNull(privateUser.getPublicGists(), "Public should not be null");
         assertNotNull(privateUser.getFollowers(), "Followers should not be null");
@@ -261,5 +289,142 @@ public class GithubTest {
         assertNotNull(privateUser.getPlan().getSpace(), "Plan space should not be null");
         assertNotNull(privateUser.getPlan().getCollaborators(), "Plan collaborators should not be null");
         assertNotNull(privateUser.getPlan().getPrivateRepos(), "Plan private repos should not be null");
+    }
+
+    private void verifyPublicRepo(PublicRepo publicRepo){
+        assertNotNull(publicRepo.getId(), "ID should not be null");
+        assertNotNull(publicRepo.getNodeID(), "Node ID should not be null");
+        assertNotNull(publicRepo.getName(), "Name should not be null");
+        assertNotNull(publicRepo.getFullName(), "Full Name should not be null");
+        assertNotNull(publicRepo.getOwner(), "Owner should not be null");
+        assertNotNull(publicRepo.getHtmlURL(), "HTML URL should not be null");
+        assertNotNull(publicRepo.getDescription(), "Description should not be null");
+        assertNotNull(publicRepo.getUrl(), "URL should not be null");
+        assertNotNull(publicRepo.getForksURL(), "Forks URL should not be null");
+        assertNotNull(publicRepo.getKeysURL(), "Keys URL should not be null");
+        assertNotNull(publicRepo.getCollaboratorsURL(), "Collaborators URL should not be null");
+        assertNotNull(publicRepo.getTeamsURL(), "Teams URL should not be null");
+        assertNotNull(publicRepo.getHooksURL(), "Hooks URL should not be null");
+        assertNotNull(publicRepo.getIssueEventsURL(), "Issue Events URL should not be null");
+        assertNotNull(publicRepo.getEventsURL(), "Events URL should not be null");
+        assertNotNull(publicRepo.getAssigneesURL(), "Assignees URL should not be null");
+        assertNotNull(publicRepo.getBranchesURL(), "Branches URL should not be null");
+        assertNotNull(publicRepo.getTagsURL(), "Tags URL should not be null");
+        assertNotNull(publicRepo.getBlobsURL(), "Blobs URL should not be null");
+        assertNotNull(publicRepo.getGitTagsURL(), "Git Tags URL should not be null");
+        assertNotNull(publicRepo.getGitRefsURL(), "Git Refs URL should not be null");
+        assertNotNull(publicRepo.getTreesURL(), "Trees URL should not be null");
+        assertNotNull(publicRepo.getStatusesURL(), "Statuses URL should not be null");
+        assertNotNull(publicRepo.getLanguagesURL(), "Languages URL should not be null");
+        assertNotNull(publicRepo.getStargazersURL(), "Stargazers URL should not be null");
+        assertNotNull(publicRepo.getContributorsURL(), "Contributors URL should not be null");
+        assertNotNull(publicRepo.getSubscribersURL(), "Subscribers URL should not be null");
+        assertNotNull(publicRepo.getSubscriptionURL(), "Subscription URL should not be null");
+        assertNotNull(publicRepo.getCommitsURL(), "Commits URL should not be null");
+        assertNotNull(publicRepo.getGitCommitsURL(), "Git Commits URL should not be null");
+        assertNotNull(publicRepo.getCommentsURL(), "Comments URL should not be null");
+        assertNotNull(publicRepo.getIssueCommentURL(), "Issue Comment URL should not be null");
+        assertNotNull(publicRepo.getContentsURL(), "Contents URL should not be null");
+        assertNotNull(publicRepo.getCompareURL(), "Compare URL should not be null");
+        assertNotNull(publicRepo.getMergesURL(), "Merges URL should not be null");
+        assertNotNull(publicRepo.getArchiveURL(), "Archive URL should not be null");
+        assertNotNull(publicRepo.getDownloadsURL(), "Downloads URL should not be null");
+        assertNotNull(publicRepo.getIssuesURL(), "Issues URL should not be null");
+        assertNotNull(publicRepo.getPullsURL(), "Pulls URL should not be null");
+        assertNotNull(publicRepo.getMilestonesURL(), "Milestones URL should not be null");
+        assertNotNull(publicRepo.getNotificationsURL(), "Notifications URL should not be null");
+        assertNotNull(publicRepo.getLabelsURL(), "Labels URL should not be null");
+        assertNotNull(publicRepo.getReleasesURL(), "Releases URL should not be null");
+        assertNotNull(publicRepo.getDeploymentsURL(), "Deployments URL should not be null");
+        assertNotNull(publicRepo.getCreatedAt(), "Created At should not be null");
+        assertNotNull(publicRepo.getUpdatedAt(), "Updated At should not be null");
+        assertNotNull(publicRepo.getPushedAt(), "Pushed At should not be null");
+        assertNotNull(publicRepo.getGitURL(), "Git URL should not be null");
+        assertNotNull(publicRepo.getSshURL(), "SSH URL should not be null");
+        assertNotNull(publicRepo.getCloneURL(), "Clone URL should not be null");
+        assertNotNull(publicRepo.getSvnURL(), "SVN URL should not be null");
+        assertFieldExistsAndCanBeNull(publicRepo.getHomepage(), true);
+        assertFieldExistsAndCanBeNull(publicRepo.getLanguage(), true);
+        assertFieldExistsAndCanBeNull(publicRepo.getLicense(), true);
+       // assertNotNull(publicRepo.getMirrorURL(), "Mirror URL should not be null");
+        assertNotNull(publicRepo.getDefaultBranch(), "Default Branch should not be null");
+    }
+
+    private void verifyPrivateRepo(PrivateRepo privateRepo){
+        assertNotNull(privateRepo.getId(), "ID should not be null");
+        assertNotNull(privateRepo.getNodeID(), "Node ID should not be null");
+        assertNotNull(privateRepo.getName(), "Name should not be null");
+        assertNotNull(privateRepo.getFullName(), "Full Name should not be null");
+        assertNotNull(privateRepo.getOwner(), "Owner should not be null");
+        assertNotNull(privateRepo.getHtmlURL(), "HTML URL should not be null");
+        assertFieldExistsAndCanBeNull(privateRepo.getDescription(), true);
+        assertNotNull(privateRepo.getUrl(), "URL should not be null");
+        assertNotNull(privateRepo.getForksURL(), "Forks URL should not be null");
+        assertNotNull(privateRepo.getKeysURL(), "Keys URL should not be null");
+        assertNotNull(privateRepo.getCollaboratorsURL(), "Collaborators URL should not be null");
+        assertNotNull(privateRepo.getTeamsURL(), "Teams URL should not be null");
+        assertNotNull(privateRepo.getHooksURL(), "Hooks URL should not be null");
+        assertNotNull(privateRepo.getIssueEventsURL(), "Issue Events URL should not be null");
+        assertNotNull(privateRepo.getEventsURL(), "Events URL should not be null");
+        assertNotNull(privateRepo.getAssigneesURL(), "Assignees URL should not be null");
+        assertNotNull(privateRepo.getBranchesURL(), "Branches URL should not be null");
+        assertNotNull(privateRepo.getTagsURL(), "Tags URL should not be null");
+        assertNotNull(privateRepo.getBlobsURL(), "Blobs URL should not be null");
+        assertNotNull(privateRepo.getGitTagsURL(), "Git Tags URL should not be null");
+        assertNotNull(privateRepo.getGitRefsURL(), "Git Refs URL should not be null");
+        assertNotNull(privateRepo.getTreesURL(), "Trees URL should not be null");
+        assertNotNull(privateRepo.getStatusesURL(), "Statuses URL should not be null");
+        assertNotNull(privateRepo.getLanguagesURL(), "Languages URL should not be null");
+        assertNotNull(privateRepo.getStargazersURL(), "Stargazers URL should not be null");
+        assertNotNull(privateRepo.getContributorsURL(), "Contributors URL should not be null");
+        assertNotNull(privateRepo.getSubscribersURL(), "Subscribers URL should not be null");
+        assertNotNull(privateRepo.getSubscriptionURL(), "Subscription URL should not be null");
+        assertNotNull(privateRepo.getCommitsURL(), "Commits URL should not be null");
+        assertNotNull(privateRepo.getGitCommitsURL(), "Git Commits URL should not be null");
+        assertNotNull(privateRepo.getCommentsURL(), "Comments URL should not be null");
+        assertNotNull(privateRepo.getIssueCommentURL(), "Issue Comment URL should not be null");
+        assertNotNull(privateRepo.getContentsURL(), "Contents URL should not be null");
+        assertNotNull(privateRepo.getCompareURL(), "Compare URL should not be null");
+        assertNotNull(privateRepo.getMergesURL(), "Merges URL should not be null");
+        assertNotNull(privateRepo.getArchiveURL(), "Archive URL should not be null");
+        assertNotNull(privateRepo.getDownloadsURL(), "Downloads URL should not be null");
+        assertNotNull(privateRepo.getIssuesURL(), "Issues URL should not be null");
+        assertNotNull(privateRepo.getPullsURL(), "Pulls URL should not be null");
+        assertNotNull(privateRepo.getMilestonesURL(), "Milestones URL should not be null");
+        assertNotNull(privateRepo.getNotificationsURL(), "Notifications URL should not be null");
+        assertNotNull(privateRepo.getLabelsURL(), "Labels URL should not be null");
+        assertNotNull(privateRepo.getReleasesURL(), "Releases URL should not be null");
+        assertNotNull(privateRepo.getDeploymentsURL(), "Deployments URL should not be null");
+        assertNotNull(privateRepo.getCreatedAt(), "Created At should not be null");
+        assertNotNull(privateRepo.getUpdatedAt(), "Updated At should not be null");
+        assertNotNull(privateRepo.getPushedAt(), "Pushed At should not be null");
+        assertNotNull(privateRepo.getGitURL(), "Git URL should not be null");
+        assertNotNull(privateRepo.getSshURL(), "SSH URL should not be null");
+        assertNotNull(privateRepo.getCloneURL(), "Clone URL should not be null");
+        assertNotNull(privateRepo.getSvnURL(), "SVN URL should not be null");
+        assertFieldExistsAndCanBeNull(privateRepo.getHomepage(), true);
+        assertFieldExistsAndCanBeNull(privateRepo.getLanguage(), true);
+        assertFieldExistsAndCanBeNull(privateRepo.getLicense(), true);
+        assertFieldExistsAndCanBeNull(privateRepo.getMirrorURL(), true);
+        assertNotNull(privateRepo.getDefaultBranch(), "Default Branch should not be null");
+        assertNotNull(privateRepo.getPermissions(), "Permissions should not be null");
+    }
+
+    private void verifyCommitsAndPrint(CommitDetail commitDetail){
+        assertNotNull(commitDetail.getAuthor(), "Author should not be null");
+        assertNotNull(commitDetail.getSha(), "Sha should not be null");
+        assertNotNull(commitDetail.getCommit().getMessage(), "Message should not be null");
+        System.out.println(commitDetail);
+    }
+
+    private static String getTokenFromProperties() {
+        Properties properties = new Properties();
+        try (FileInputStream input = new FileInputStream("config/config.properties")) {
+            properties.load(input);
+            return properties.getProperty("github.token");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
