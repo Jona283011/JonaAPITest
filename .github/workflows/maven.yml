@@ -34,19 +34,13 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Test Summary
-      uses: test-summary/action@v2
-      with:
-        paths: "target/surefire-reports/"
-        output: test-summary.md
+    - name: Upload Test Results
       if: always()
-
-    - name: Upload test summary
       uses: actions/upload-artifact@v3
       with:
-        name: test-summary
-        path: test-summary.md
-      if: always()
+        name: test-results
+        path: |
+          target/surefire-reports/
 
   e2e:
     runs-on: ubuntu-latest
