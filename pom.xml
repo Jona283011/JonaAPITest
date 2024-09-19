@@ -14,6 +14,9 @@
         <cucumberTrivago.version>3.5.1</cucumberTrivago.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <testngFile>src/test/resources/testNG.xml</testngFile>
+        <slf4j.version>1.7.32</slf4j.version>
+        <fasterxml.version>2.15.1</fasterxml.version>
+        <junit.version>5.8.2</junit.version>
     </properties>
 
     <profiles>
@@ -41,13 +44,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -70,28 +73,28 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.17.2</version>
+            <version>${fasterxml.version}</version>
         </dependency>
 
         <!-- Jackson Core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.15.1</version>
+            <version>${fasterxml.version}</version>
         </dependency>
 
         <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.15.1</version>
+            <version>${fasterxml.version}</version>
         </dependency>
 
         <!-- Jackson Datatype for Java 8 Date/Time API -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.15.1</version>
+            <version>${fasterxml.version}</version>
         </dependency>
 
         <!-- Validation API -->
@@ -147,6 +150,13 @@
             <version>${cucumberTrivago.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
 
     </dependencies>
 
