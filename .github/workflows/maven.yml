@@ -73,7 +73,7 @@ jobs:
           name: cluecumber-report
           path: |
             target/generated-report
-  e2e2:
+  e2eFailure:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -85,7 +85,15 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run Cucumber Tests
-        run: mvn test -PE2E
+        run: mvn test -PE2E -DtestngFile="src/test/resources/failureTestNG.xml" cluecumber:reporting
+
+      - name: Upload Cluecumber Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cluecumber-report
+          path: |
+            target/generated-report
 
       - name: Report
         uses: dorny/test-reporter@v1

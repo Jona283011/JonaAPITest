@@ -1,0 +1,9 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name = "E2E Suite" verbose="0">
+    <test name = "E2E tests" parallel="classes" thread-count="1">
+        <classes>
+            <class name = "com.example.runners.UserFailureTestRunner"/>
+        </classes>
+    </test>
+</suite>
