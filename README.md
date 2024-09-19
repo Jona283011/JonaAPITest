@@ -43,14 +43,14 @@ open target/generated-report/index.html
 ```
 
 ## Run E2E feature
-Using our IDE (in my case intelliJ), if we install the cucumber and gherkin plugins we can run directly.:
+Using our IDE (in my case intelliJ), if we install the cucumber and gherkin plugins we can run directly:
 
 <img src="images/feature.png" alt="Run feature" width="300"/>
 
 [How to run a full feature](https://vimeo.com/1011063571)
 
 ## Run E2E scenario
-Using our IDE (in my case intelliJ), if we install the cucumber and gherkin plugins we can run directly.:
+Using our IDE (in my case intelliJ), if we install the cucumber and gherkin plugins we can run directly:
 
 <img src="images/scenario.png" alt="Run scenario" width="300"/>
 
