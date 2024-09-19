@@ -99,7 +99,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: Cucumber Tests
+          name: Cucumber Failure Tests
           path: target/cucumber-reports/*.xml
           reporter: java-junit
           fail-on-error: true
