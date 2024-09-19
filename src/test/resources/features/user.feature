@@ -40,7 +40,7 @@ Feature: GitHub API testing
 
     Examples:
       | expectedStatusCode | updatedName                                                                                                                                                                                                                                                      | githubToken   | expectedName |
-      | 422                | PepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepe | github.token  | Jonathan     |
+      | 422                | PepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepe | github.token  | failure      |
 
   Scenario: Basic User with PATCH
     Given Default user with github token "github.token"
