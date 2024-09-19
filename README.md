@@ -11,11 +11,11 @@ I have created the PDF points using JUnit and then I have generated several E2E 
 
 ## Project Structure
 
-- **src/main/java:**: Contains the main source code of the project.
-- **src/test/java:**: Contains unit tests, testRunners and steps needed for cucumber.
-- **src/test/resources/features:**: Contains the project features, at the moment there is only 1.
-- **pom.xml:**: Maven configuration file that manages dependencies and the project lifecycle.
-- **config.properties:**:Configuration file for storing sensitive information (e.g., access tokens).
+- **src/main/java:** Contains the main source code of the project.
+- **src/test/java:** Contains unit tests, testRunners and steps needed for cucumber.
+- **src/test/resources/features:** Contains the project features, at the moment there is only 1.
+- **pom.xml:** Maven configuration file that manages dependencies and the project lifecycle.
+- **config.properties:** Configuration file for storing sensitive information (e.g., access tokens).
 
 
 ## Install dependencies
@@ -64,7 +64,7 @@ I have created a small CI/CD with a build job and 2 e2e jobs (to prepare it and 
 
 [How to see cluecumber report](https://vimeo.com/1011063547)
 
-I've added the java-unit reporter to have better visibility of tests that have passed or failed
+I've added the java-unit reporter to have better visibility of tests that have passed or failed.
 
 <img src="images/report.png" alt="Run scenario" width="300"/>
 
