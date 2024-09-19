@@ -59,6 +59,10 @@ I have created a small CI/CD with a build job and 2 e2e jobs (to prepare it and 
 <img src="images/ci:cd.png" alt="Run scenario" width="300"/>
 <img src="images/artifact.png" alt="Run scenario" width="300"/>
 
+I've added the java-unit reporter to have better visibility of tests that have passed or failed
+
+<img src="images/report.png" alt="Run scenario" width="300"/>
+
 ### Notes
 - **config.properties**: Added github token in config.properties to avoid uploading the token to the repository. Always handle sensitive information carefully and follow best practices for security.
 - **AssertUtils**: The AssertUtils class has been created to cover the use case where a field is required and can be null. It has not been extended from AssertTrue because it is a static method.
