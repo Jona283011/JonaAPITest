@@ -47,14 +47,14 @@ Using our IDE (in my case intelliJ), if we install the cucumber and gherkin plug
 
 <img src="images/feature.png" alt="Run feature" width="300"/>
 
-[![Feature video]](https://vimeo.com/1011063571)
+[![Feature video](https://i.vimeocdn.com/video/1011063571.jpg)](https://vimeo.com/1011063571)
 
 ## Run E2E scenario
 Using our IDE (in my case intelliJ), if we install the cucumber and gherkin plugins we can run directly.:
 
 <img src="images/scenario.png" alt="Run scenario" width="300"/>
 
-[![Scenario video]](https://vimeo.com/1011063587)
+[![Scenario video](https://i.vimeocdn.com/video/1011063587.jpg)](https://vimeo.com/1011063587)
 
 
 ## CI/CD
@@ -63,7 +63,7 @@ I have created a small CI/CD with a build job and 2 e2e jobs (to prepare it and 
 <img src="images/ci:cd.png" alt="Run scenario" width="300"/>
 <img src="images/artifact.png" alt="Run scenario" width="300"/>
 
-[![Cluecumber video]](https://vimeo.com/1011063547)
+[![Cluecumber video](https://i.vimeocdn.com/video/1011063547.jpg)](https://vimeo.com/1011063547)
 
 I've added the java-unit reporter to have better visibility of tests that have passed or failed
 
