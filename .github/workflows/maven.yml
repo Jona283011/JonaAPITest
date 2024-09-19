@@ -54,7 +54,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run Cucumber Tests
-        run: mvn test -PE2E
+        run: mvn test -PE2E cluecumber:reporting
 
       - name: Upload Cluecumber Report
         if: always()
