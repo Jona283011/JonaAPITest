@@ -21,12 +21,24 @@ This command will download the necessary dependencies and compile the project.:
 ```bash
 mvn clean install
 ```
-## Run tests
+## Run Unit tests
 This command will run all the tests defined in the src/test/java directory.:
 ```bash
 mvn test
 ```
 
+## Run E2E tests
+This command will run all the e2e tests defined in the testNG.xml file.:
+```bash
+mvn test -PE2E
+```
+
+## Run cluecumber report
+Once you have executed the e2e, run this command to generate the e2e report:
+```bash
+mvn cluecumber:reporting
+open target/generated-report/index.html
+```
 
 ### Notes
 - **config.properties**: Added github token in config.properties to avoid uploading the token to the repository. Always handle sensitive information carefully and follow best practices for security.

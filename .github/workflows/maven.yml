@@ -55,6 +55,14 @@ jobs:
           cache: maven
       - name: Run Cucumber Tests
         run: mvn test -PE2E
+
+      - name: Upload Cluecumber Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cluecumber-report
+          path: |
+            target/generated-report/index.html
   e2e2:
     runs-on: ubuntu-latest
     needs: build
