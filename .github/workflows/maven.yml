@@ -32,10 +32,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
-    - name: Run Unit Tests
-      run: mvn test
+      run: mvn package
 
     - name: List test results
       run: ls -al target/surefire-reports/
