@@ -11,7 +11,7 @@ This project has been created to test the Gihub API. Below are the steps to set 
 ## Project Structure
 
 - **src/main/java:**: Contains the main source code of the project.
-- **src/test/java:**: Contains unit tests, CucumberRunner, steps needed for cucumber.
+- **src/test/java:**: Contains unit tests, testRunners and steps needed for cucumber.
 - **src/test/resources/features:**: Contains the project features, at the moment there is only 1.
 - **pom.xml:**: Maven configuration file that manages dependencies and the project lifecycle.
 - **config.properties:**:Configuration file for storing sensitive information (e.g., access tokens).

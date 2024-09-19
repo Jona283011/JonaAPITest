@@ -3,7 +3,7 @@
 <suite name = "E2E Suite" verbose="0">
     <test name = "E2E tests" parallel="classes" thread-count="1">
         <classes>
-            <class name = "com.example.runners.CucumberTestRunner"/>
+            <class name = "com.example.runners.UserTestRunner"/>
         </classes>
     </test>
 </suite>
