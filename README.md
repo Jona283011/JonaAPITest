@@ -1,6 +1,7 @@
 # JonaAPITest Project
 
 This project has been created to test the Gihub API. Below are the steps to set up and run the tests.
+I have created the PDF points using JUnit and then I have generated several E2E with Cucumber, Gherkin and Rest-assured. As for the E2E I have made basic cases and one with PATCH of the user where I have only updated the name field. Everything is ready to be able to update more fields, or to look for another endpoint and build what is necessary.
 
 ## Requirements
 
