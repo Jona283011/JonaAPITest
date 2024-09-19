@@ -63,6 +63,10 @@ I've added the java-unit reporter to have better visibility of tests that have p
 
 <img src="images/report.png" alt="Run scenario" width="300"/>
 
+To give a better visibility of the E2E results and not having to access the job to see which one failed and which one didn't, I decided to add the java-unit reporter for Cucumber as well. This is very useful once we add many e2e.
+
+<img src="images/CucumberReport.png" alt="Run scenario" width="300"/>
+
 ### Notes
 - **config.properties**: Added github token in config.properties to avoid uploading the token to the repository. Always handle sensitive information carefully and follow best practices for security.
 - **AssertUtils**: The AssertUtils class has been created to cover the use case where a field is required and can be null. It has not been extended from AssertTrue because it is a static method.
