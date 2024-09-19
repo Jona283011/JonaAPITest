@@ -76,7 +76,7 @@ public class GithubTest {
 
     @Test
     public void task3() throws Exception {
-        String url = BASE_USERS + "nonExistingUser";
+        String url = BASE_USERS + "/nonExistingUser";
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
@@ -124,7 +124,7 @@ public class GithubTest {
 
     @Test
     public void task5() throws Exception {
-        String url = BASE_USERS + "TestingNonExistingUser" + "/repos";
+        String url = BASE_USERS + "/TestingNonExistingUser" + "/repos";
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
