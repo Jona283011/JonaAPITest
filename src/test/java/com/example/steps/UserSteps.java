@@ -18,24 +18,24 @@ public class UserSteps {
     private String jsonPayload;
 
     @Given("Default user without github token")
-    public void createAuthenticationRequest() {
+    public void defaultUser() {
         TestUtils.contextHolder.set(new TestContextHolder());
     }
 
     @Given("Default user with github token {string}")
-    public void createAuthenticationRequest(String githubToken) {
+    public void defaultUserWithToken(String githubToken) {
         TestUtils.contextHolder.set(new TestContextHolder());
         getContext().setGithubToken(githubToken);
     }
 
     @Given("Default user with username {string}")
-    public void createAuthenticationRequest2(String username) {
+    public void defaultUserWithUserName(String userName) {
         TestUtils.contextHolder.set(new TestContextHolder());
-        getContext().setUserName(username);
+        getContext().setUserName(userName);
     }
 
     @Given("with PATCH requestBody")
-    public void createAuthenticationRequest22(String jsonData) {
+    public void patchUser(String jsonData) {
         this.jsonPayload = jsonData;
     }
 
@@ -50,7 +50,7 @@ public class UserSteps {
     }
 
     @When("GET user by userName with expected statusCode {int} and expected message {string}")
-    public void getUser2(int expectedStatusCode, String expectedMessage) throws JsonProcessingException {
+    public void getUser(int expectedStatusCode, String expectedMessage) throws JsonProcessingException {
         getContext().setPrivateUser(userController.getUserByUsernameEndpoint(expectedStatusCode, expectedMessage, getContext().getUserName()));
     }
 
