@@ -10,24 +10,24 @@ public class Verification {
     private String reason;
 
     @JsonProperty("signature")
-    private Object signature;
+    private String signature;
 
     @JsonProperty("payload")
-    private Object payload;
+    private String payload;
 
-    public Object getPayload() {
+    public String getPayload() {
         return payload;
     }
 
-    public void setPayload(Object payload) {
+    public void setPayload(String payload) {
         this.payload = payload;
     }
 
-    public Object getSignature() {
+    public String getSignature() {
         return signature;
     }
 
-    public void setSignature(Object signature) {
+    public void setSignature(String signature) {
         this.signature = signature;
     }
 
@@ -49,10 +49,14 @@ public class Verification {
 
     @Override
     public String toString() {
+        String maskedSign = signature != null
+                ? signature.replaceAll("(?<=.{3}).", "*")
+                : null;
+
         return "Verification{" +
                 "verified=" + verified +
                 ", reason='" + reason + '\'' +
-                ", signature='" + signature + '\'' +
+                ", signature='" + maskedSign + '\'' +
                 ", payload='" + payload + '\'' +
                 '}';
     }
