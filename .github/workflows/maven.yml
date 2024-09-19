@@ -34,13 +34,14 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Upload Test Results
+    - name: Report
+      uses: dorny/test-reporter@v1
       if: always()
-      uses: actions/upload-artifact@v3
       with:
-        name: test-results
-        path: |
-          target/surefire-reports/
+        name: Maven Tests
+        path: target/surefire-reports/*.xml
+        reporter: java-junit
+        fail-on-error: true
 
   e2e:
     runs-on: ubuntu-latest
