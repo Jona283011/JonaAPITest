@@ -1,11 +1,11 @@
-package com.example.models;
+package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public class PublicRepo {
+public class PrivateRepo {
 
     @JsonProperty("id")
     private long id;
@@ -243,6 +243,9 @@ public class PublicRepo {
 
     @JsonProperty("default_branch")
     private String defaultBranch;
+
+    @JsonProperty("permissions")
+    private Permissions permissions;
 
     public String getDefaultBranch() {
         return defaultBranch;
@@ -874,5 +877,13 @@ public class PublicRepo {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Permissions getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Permissions permissions) {
+        this.permissions = permissions;
     }
 }

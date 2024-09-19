@@ -1,4 +1,4 @@
-package com.example.models;
+package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;

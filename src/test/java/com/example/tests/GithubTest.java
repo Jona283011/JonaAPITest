@@ -1,6 +1,6 @@
 package com.example.tests;
 
-import com.example.models.*;
+import com.example.model.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.client.methods.CloseableHttpResponse;
