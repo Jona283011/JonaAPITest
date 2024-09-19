@@ -31,6 +31,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Set up Maven
+      uses: actions/setup-java@v4
+      with:
+        maven-version: '3.9.8'
+        distribution: ''
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
