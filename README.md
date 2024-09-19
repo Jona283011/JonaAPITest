@@ -16,6 +16,7 @@ I have created the PDF points using JUnit and then I have generated several E2E 
 - **src/test/resources/features:** Contains the project features, at the moment there is only 1.
 - **pom.xml:** Maven configuration file that manages dependencies and the project lifecycle.
 - **config.properties:** Configuration file for storing sensitive information (e.g., access tokens).
+- **testNG.xml:** It's a file to define how tests should be executed in a project. This file allows you to specify details about test cases, test groups, classes to be executed, methods, configurations, and execution behavior (such as order, parallelization, etc.).
 
 
 ## Install dependencies
