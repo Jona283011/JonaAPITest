@@ -1,6 +1,6 @@
 Feature: GitHub API testing
 
-  Scenario Basic User
+  Scenario: Basic User
     Given Default user with github token "github.token"
     When GET user
     Then Verify that login is "Jona283011"
@@ -26,6 +26,22 @@ Feature: GitHub API testing
       | 200                | OK         | Jona283011       | Jona283011     | Jonathan     |
       | 404                | Not Found  | nonExistingUser  | null           | null         |
 
+  Scenario Outline: Basic User with failure PATCH
+    Given Default user with github token "<githubToken>"
+    And with PATCH requestBody
+         """
+      {
+        "name": "<updatedName>"
+      }
+      """
+    When PATCH user with expected statusCode <expectedStatusCode>
+    And GET user
+    Then Verify that name is "<expectedName>"
+
+    Examples:
+      | expectedStatusCode | updatedName                                                                                                                                                                                                                                                      | githubToken   | expectedName |
+      | 422                | PepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepe | github.token  | Jonathan     |
+
   Scenario: Basic User with PATCH
     Given Default user with github token "github.token"
     And with PATCH requestBody
@@ -45,19 +61,3 @@ Feature: GitHub API testing
       """
     When PATCH user
     And Verify that name is "Jonathan"
-
-  Scenario Outline: Basic User with failure PATCH
-    Given Default user with github token "<githubToken>"
-    And with PATCH requestBody
-         """
-      {
-        "name": "<updatedName>"
-      }
-      """
-    When PATCH user with expected statusCode <expectedStatusCode>
-    And GET user
-    Then Verify that name is "<expectedName>"
-
-    Examples:
-      | expectedStatusCode | updatedName                                                                                                                                                                                                                                                      | githubToken   | expectedName |
-      | 422                | PepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepe | github.token  | Pepe         |
