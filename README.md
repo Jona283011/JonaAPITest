@@ -20,18 +20,18 @@ I have created the PDF points using JUnit and then I have generated several E2E 
 
 
 ## Install dependencies
-This command will download the necessary dependencies and compile the project.:
+This command will download the necessary dependencies and compile the project:
 ```bash
 mvn clean install
 ```
 ## Run Unit tests
-This command will run all the tests defined in the src/test/java directory.:
+This command will run all the tests defined in the src/test/java directory:
 ```bash
 mvn test
 ```
 
 ## Run E2E tests
-This command will run all the e2e tests defined in the testNG.xml file.:
+This command will run all the e2e tests defined in the testNG.xml file:
 ```bash
 mvn test -PE2E
 ```
