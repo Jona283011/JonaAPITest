@@ -5,7 +5,7 @@ I have created the PDF points using JUnit and then I have generated several E2E 
 
 ## Requirements
 
-- **Java**: Ensure you have Java JDK 8 or higher installed.
+- **Java**: Ensure you have Java JDK 21 or higher installed.
 - **Maven**: Maven is required to manage dependencies and run tests.
 
 
