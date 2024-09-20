@@ -80,4 +80,4 @@ The basic user scenario with PATCH error fails to display how a Cucumber error i
 ### Notes
 - **config.properties**: Added github token in config.properties to avoid uploading the token to the repository. Always handle sensitive information carefully and follow best practices for security.
 - **AssertUtils**: The AssertUtils class has been created to cover the use case where a field is required and can be null. It has not been extended from AssertTrue because it is a static method.
-- **Siganture is masked**: I have decided to mask the signature because it is a sensitive field.
+- **Signature is masked**: I have decided to mask the signature because it is a sensitive field.
