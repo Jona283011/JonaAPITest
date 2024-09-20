@@ -13,5 +13,5 @@ Feature: GitHub API failure testing
     Then Verify that name is "<expectedName>"
 
     Examples:
-      | expectedStatusCode | updatedName                                                                                                                                                                                                                                                      | githubToken   | expectedName |
-      | 422                | PepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepe | github.token  | failure      |
+     | githubToken  | expectedStatusCode | updatedName                                                                                                                                                                                                                                                      | expectedName |
+     | github.token | 422                | PepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepePepe | failure      |

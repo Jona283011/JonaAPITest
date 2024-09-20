@@ -17,11 +17,11 @@ import static org.testng.Assert.assertTrue;
 
 public class UserController {
 
-    private final String BASEUrl = "https://api.github.com/";
+    private final String BaseUrl = "https://api.github.com/";
     ObjectMapper objectMapper = new ObjectMapper();
 
     public PrivateUser getUserEndpoint(String githubToken) throws JsonProcessingException {
-        String url = BASEUrl + "user";
+        String url = BaseUrl + "user";
 
         Response response = RestAssured
                 .given()
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     public PrivateUser getUserEndpoint(String githubToken, int expectedStatusCode) throws JsonProcessingException {
-        String url = BASEUrl + "user";
+        String url = BaseUrl + "user";
 
         Response response = RestAssured
                 .given()
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     public PrivateUser getUserByUsernameEndpoint(int expectedStatusCode, String expectedMessage, String userName) throws JsonProcessingException {
-        String url = BASEUrl + "users/" + userName;
+        String url = BaseUrl + "users/" + userName;
 
         Response response = RestAssured
                 .given()
@@ -86,7 +86,7 @@ public class UserController {
     }
 
     public PrivateUser patchUserEndpoint(String githubToken, String requestBody) throws JsonProcessingException {
-        String url = BASEUrl + "user";
+        String url = BaseUrl + "user";
 
         Response response = RestAssured
                 .given()
@@ -106,7 +106,7 @@ public class UserController {
     }
 
     public PrivateUser patchUserEndpoint(String githubToken, String requestBody, int expectedStatusCode) throws JsonProcessingException {
-        String url = BASEUrl + "user";
+        String url = BaseUrl + "user";
 
         Response response = RestAssured
                 .given()

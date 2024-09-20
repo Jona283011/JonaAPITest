@@ -11,9 +11,9 @@ Feature: GitHub API testing
     Then Verify that login is "<expectedLogin>"
 
     Examples:
-      | expectedStatusCode | expectedLogin  | githubToken   |
-      | 200                | Jona283011     | github.token  |
-      | 401                | null           | github.token2 |
+      | githubToken   | expectedStatusCode | expectedLogin  |
+      | github.token  | 200                | Jona283011     |
+      | github.token2 | 401                | null           |
 
   Scenario Outline: Basic User with statusCode username
     Given Default user with username "<userName>"
@@ -22,9 +22,9 @@ Feature: GitHub API testing
     Then Verify that name is "<expectedName>"
 
     Examples:
-      | expectedStatusCode | message    | userName         | expectedLogin  | expectedName |
-      | 200                | OK         | Jona283011       | Jona283011     | Jonathan     |
-      | 404                | Not Found  | nonExistingUser  | null           | null         |
+     | userName        | expectedStatusCode | message    | expectedLogin  | expectedName |
+     | Jona283011      | 200                | OK         | Jona283011     | Jonathan     |
+     | nonExistingUser | 404                | Not Found  | null           | null         |
 
   Scenario: Basic User with PATCH
     Given Default user with github token "github.token"
