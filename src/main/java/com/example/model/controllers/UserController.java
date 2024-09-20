@@ -18,7 +18,7 @@ import static org.testng.Assert.assertTrue;
 
 public class UserController {
 
-    private final String BaseUrl = "https://api.github.com/";
+    private final String baseUrl = "https://api.github.com/";
     ObjectMapper objectMapper = new ObjectMapper();
 
     public UserController() {
@@ -26,35 +26,35 @@ public class UserController {
     }
 
     public PrivateUser getUserEndpoint(String githubToken) throws JsonProcessingException {
-        String url = BaseUrl + "user";
+        String url = baseUrl + "user";
         Response response = sendGetRequest(url, githubToken);
         validateResponse(response, HttpStatus.SC_OK, null);
         return deserializeResponse(response, HttpStatus.SC_OK);
     }
 
     public PrivateUser getUserEndpoint(String githubToken, int expectedStatusCode) throws JsonProcessingException {
-        String url = BaseUrl + "user";
+        String url = baseUrl + "user";
         Response response = sendGetRequest(url, githubToken);
         validateResponse(response, expectedStatusCode, null);
         return deserializeResponse(response, expectedStatusCode);
     }
 
     public PrivateUser getUserByUsernameEndpoint(int expectedStatusCode, String expectedMessage, String userName) throws JsonProcessingException {
-        String url = BaseUrl + "users/" + userName;
+        String url = baseUrl + "users/" + userName;
         Response response = sendGetRequest(url, null);
         validateResponse(response, expectedStatusCode, expectedMessage);
         return deserializeResponse(response, expectedStatusCode);
     }
 
     public PrivateUser patchUserEndpoint(String githubToken, String requestBody) throws JsonProcessingException {
-        String url = BaseUrl + "user";
+        String url = baseUrl + "user";
         Response response = sendPatchRequest(url, githubToken, requestBody);
         validateResponse(response, HttpStatus.SC_OK);
         return deserializeResponse(response, HttpStatus.SC_OK);
     }
 
     public PrivateUser patchUserEndpoint(String githubToken, String requestBody, int expectedStatusCode) throws JsonProcessingException {
-        String url = BaseUrl + "user";
+        String url = baseUrl + "user";
         Response response = sendPatchRequest(url, githubToken, requestBody);
         validateResponse(response, expectedStatusCode);
         return deserializeResponse(response, expectedStatusCode);
